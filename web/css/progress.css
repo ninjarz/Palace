@@ -1,0 +1,53 @@
+/* -webkit- */
+.progress-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    position: relative;
+    background-color: #a72525;
+}
+
+.spin3 {
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    border-radius: 100px 0 0 100px;
+    position: absolute;
+    background-color: #4b86db;
+
+
+    transform-origin: right center;
+    -webkit-animation: spin 1600ms linear 800ms;
+    -webkit-animation-fill-mode: forwards;
+}
+
+.spin2 {
+    left: 50%;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    border-radius: 0 100px 100px 0;
+    position: absolute;
+    background-color: #a72525;
+}
+
+.spin1 {
+    left: 50%;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    border-radius: 0 100px 100px 0;
+    position: absolute;
+    background-color: #4b86db;
+
+    opacity: 0;
+    transform-origin: left center;
+    transform: rotate(180deg);
+    -webkit-animation: spin 800ms linear;
+}
+
+@-webkit-keyframes spin {
+    0%    { opacity: 1; transform: rotate(0deg); }
+    100%  { opacity: 1; transform: rotate(180deg); }
+}
