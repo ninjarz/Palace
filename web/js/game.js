@@ -1,39 +1,73 @@
+var xmlHttp;
+
+function createXmlHttp() {
+	if(window.XMLHttpRequest) {
+		xmlHttp = new XMLHttpRequest();
+	} else if (window.ActiveXObject) {
+	    try {
+            xmlHttp = new ActiveXObject("MSXML2.XMLHttp");
+
+        } catch(e) {
+            xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+
+        }
+	}
+}
 
 window.onload=function() {
+    // canvas
     var canvas = document.getElementsByTagName("canvas")[0];
     canvas.width = canvas.parentNode.offsetWidth;
     canvas.height = 480;
-    var context = canvas.getContext("2d");
-    // Background image
+
+    // Game objects
+    var users = [];
+    var name = "";
+    var hero = {
+        speed: 256,
+        x: canvas.width / 2,
+        y: canvas.height / 2
+    };
+    var monster = {
+        x: -100,
+        y: -100
+    };
+    var monstersCaught = 0;
+
+    createXmlHttp();
+    xmlHttp.onreadystatechange = function callback() {
+        if (xmlHttp.readyState != 4) {
+        } else {
+            var obj = eval('(' + xmlHttp.responseText + ')');
+            users = obj["users"];
+            name = obj["name"];
+            // hero.x = obj["users"][name]["x"];
+            // hero.y = obj["users"][name]["y"];
+            monster.x = obj["goblin"]["x"];
+            monster.y = obj["goblin"]["y"];
+            monstersCaught = obj["users"][name]["point"];
+        }
+    };
+
+    // load image
     var bgReady = false;
     var bgImage = new Image();
     bgImage.onload = function () {
         bgReady = true;
     };
     bgImage.src = "/web/image/background.png";
-
-    // Hero image
     var heroReady = false;
     var heroImage = new Image();
     heroImage.onload = function () {
         heroReady = true;
     };
     heroImage.src = "/web/image/hero.png";
-
-    // Monster image
     var monsterReady = false;
     var monsterImage = new Image();
     monsterImage.onload = function () {
         monsterReady = true;
     };
     monsterImage.src = "/web/image/monster.png";
-
-    // Game objects
-    var hero = {
-        speed: 256 // movement in pixels per second
-    };
-    var monster = {};
-    var monstersCaught = 0;
 
     // Handle keyboard controls
     var keysDown = {};
@@ -45,16 +79,6 @@ window.onload=function() {
     addEventListener("keyup", function (e) {
         delete keysDown[e.keyCode];
     }, false);
-
-    // Reset the game when the player catches a monster
-    var reset = function () {
-        hero.x = canvas.width / 2;
-        hero.y = canvas.height / 2;
-
-        // Throw the monster somewhere on the screen randomly
-        monster.x = 32 + (Math.random() * (canvas.width - 64));
-        monster.y = 32 + (Math.random() * (canvas.height - 64));
-    };
 
     // Update game objects
     var update = function (modifier) {
@@ -70,39 +94,39 @@ window.onload=function() {
         if (39 in keysDown) { // Player holding right
             hero.x += hero.speed * modifier;
         }
-
-        // Are they touching?
-        if (
-            hero.x <= (monster.x + 32)
-            && monster.x <= (hero.x + 32)
-            && hero.y <= (monster.y + 32)
-            && monster.y <= (hero.y + 32)
-        ) {
-            ++monstersCaught;
-            reset();
-        }
+        xmlHttp.open("post", "/game" + "?x=" + hero.x + "&y=" + hero.y, true);
+        xmlHttp.send(null);
     };
 
     // Draw everything
     var render = function () {
+        var context = canvas.getContext("2d");
         if (bgReady) {
-            ctx.drawImage(bgImage, 0, 0, canvas.parentNode.offsetWidth, 480);
+            context.drawImage(bgImage, 0, 0, canvas.parentNode.offsetWidth, 480);
         }
 
         if (heroReady) {
-            ctx.drawImage(heroImage, hero.x, hero.y);
+            for(var user in users) {
+                context.drawImage(heroImage, users[user].x, users[user].y);
+                context.fillText(users[user].name, users[user].x, users[user].y - 32);
+            }
+            // context.drawImage(heroImage, hero.x, hero.y);
         }
 
         if (monsterReady) {
-            ctx.drawImage(monsterImage, monster.x, monster.y);
+            context.drawImage(monsterImage, monster.x, monster.y);
         }
 
         // Score
-        ctx.fillStyle = "rgb(250, 250, 250)";
-        ctx.font = "24px Helvetica";
-        ctx.textAlign = "left";
-        ctx.textBaseline = "top";
-        ctx.fillText("Goblins caught: " + monstersCaught, 32, 32);
+        context.fillStyle = "rgb(250, 250, 250)";
+        context.font = "24px Helvetica";
+        context.textAlign = "left";
+        context.textBaseline = "top";
+        var len = 0;
+        for(var key in users) {
+            len += 1;
+        }
+        context.fillText("Goblins caught: " + monstersCaught + "num:" +len, 32, 32);
     };
 
     // The main game loop
@@ -121,7 +145,5 @@ window.onload=function() {
 
     // Let's play this game!
     var then = Date.now();
-    reset();
     main();
 };
-

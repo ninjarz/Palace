@@ -3,6 +3,8 @@ import tornado.web
 import tornado.websocket
 import tornado.httputil
 import tornado.autoreload
+import base64
+import uuid
 
 from config import *
 from service.webhandler import *
@@ -11,11 +13,12 @@ if __name__ == "__main__":
     application = tornado.web.Application(
         [
             (r"/", MainHandler),
+            (r"/game", GameHandler),
             (r"/web/(.*)", tornado.web.StaticFileHandler, dict(path=config_data['template_path'])),
         ],
-        template_path=config_data['template_path']
+        template_path=config_data['template_path'],
+        cookie_secret=base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes),
+        login_url=r"/",
     )
     application.listen(8080)
-    loop = tornado.ioloop.IOLoop.instance()
-    tornado.autoreload.start(loop)
-    loop.start()
+    tornado.ioloop.IOLoop.instance().start()
