@@ -1,26 +1,19 @@
-var xmlHttp;
-
-function createXmlHttp() {
-	if(window.XMLHttpRequest) {
-		xmlHttp = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-	    try {
-            xmlHttp = new ActiveXObject("MSXML2.XMLHttp");
-
-        } catch(e) {
-            xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
-
-        }
-	}
-}
-
 window.onload=function() {
+    // socket
+    var ws = new WebSocket("ws://" + location.host + "/game");
+    ws.onopen = function(event) {
+        console.log("ws connected");
+        game(ws);
+    }
+};
+
+function game(socket) {
     // canvas
     var canvas = document.getElementsByTagName("canvas")[0];
     canvas.width = canvas.parentNode.offsetWidth;
     canvas.height = 480;
 
-    // Game objects
+    // game objects
     var users = [];
     var name = "";
     var hero = {
@@ -34,19 +27,13 @@ window.onload=function() {
     };
     var monstersCaught = 0;
 
-    createXmlHttp();
-    xmlHttp.onreadystatechange = function callback() {
-        if (xmlHttp.readyState != 4) {
-        } else {
-            var obj = eval('(' + xmlHttp.responseText + ')');
-            users = obj["users"];
-            name = obj["name"];
-            // hero.x = obj["users"][name]["x"];
-            // hero.y = obj["users"][name]["y"];
-            monster.x = obj["goblin"]["x"];
-            monster.y = obj["goblin"]["y"];
-            monstersCaught = obj["users"][name]["point"];
-        }
+    socket.onmessage = function(event) {
+        var data = JSON.parse(event.data);
+        users = data["users"];
+        name = data["name"];
+        monster.x = data["goblin"]["x"];
+        monster.y = data["goblin"]["y"];
+        monstersCaught = data["users"][name]["point"];
     };
 
     // load image
@@ -94,8 +81,12 @@ window.onload=function() {
         if (39 in keysDown) { // Player holding right
             hero.x += hero.speed * modifier;
         }
-        xmlHttp.open("post", "/game" + "?x=" + hero.x + "&y=" + hero.y, true);
-        xmlHttp.send(null);
+
+        // todo: just send action
+        socket.send(JSON.stringify({
+            'x': hero.x,
+            'y': hero.y
+        }));
     };
 
     // Draw everything
@@ -122,11 +113,7 @@ window.onload=function() {
         context.font = "24px Helvetica";
         context.textAlign = "left";
         context.textBaseline = "top";
-        var len = 0;
-        for(var key in users) {
-            len += 1;
-        }
-        context.fillText("Goblins caught: " + monstersCaught + "num:" +len, 32, 32);
+        context.fillText("Goblins caught: " + monstersCaught, 32, 32);
     };
 
     // The main game loop
@@ -146,4 +133,4 @@ window.onload=function() {
     // Let's play this game!
     var then = Date.now();
     main();
-};
+}

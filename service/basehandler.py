@@ -3,6 +3,8 @@ import tornado.web
 
 class BaseHandler(tornado.web.RequestHandler):
     def initialize(self):
+        if not self.get_secure_cookie("user"):
+            self.set_secure_cookie("user", self.request.remote_ip)
         pass
 
     def data_received(self, chunk):

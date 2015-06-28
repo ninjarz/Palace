@@ -1,6 +1,5 @@
 import tornado.ioloop
 import tornado.web
-import tornado.websocket
 import tornado.httputil
 import tornado.autoreload
 import base64
@@ -8,6 +7,7 @@ import uuid
 
 from config import *
 from service.webhandler import *
+from service.wshandler import *
 
 if __name__ == "__main__":
     application = tornado.web.Application(
