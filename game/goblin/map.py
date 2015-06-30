@@ -9,6 +9,12 @@ class Map():
         for key in info:
             self[key] = info[key]
 
+    def palace(self):
+        self.map = [
+            [],
+            [],
+        ]
+
     def __getitem__(self, key):
         return getattr(self, key)
 
