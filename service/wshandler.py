@@ -1,13 +1,10 @@
-import random
 import json
 import tornado.websocket
 
+from game.goblin.game import *
 
-users = {}
-goblin = {
-    "x": 32 + (random.random() * (787 - 64)),
-    "y": 32 + (random.random() * (480 - 64))
-}
+
+game = Game()
 
 
 class GameHandler(tornado.websocket.WebSocketHandler):
@@ -25,27 +22,35 @@ class GameHandler(tornado.websocket.WebSocketHandler):
         # identity
         # if self.get_secure_cookie("user"):
         name = str(self.request.remote_ip)
-        if name not in users:
-            users[name] = {
-                "name": name,
-                "point": 0
-            }
+        if name not in game.players:
+            game.create_player(name)
 
         data = json.loads(message)
-        user = users[name]
-        user["x"] = data["x"]
-        user["y"] = data["y"]
+        if "commands" in data:
+            commands = data["commands"]
+            self.command(name, commands)
+            return
+        if "actions" in data:
+            actions = data["actions"]
+            self.action(name, actions)
 
-        if user["x"] <= goblin["x"] + 32 and goblin["x"] <= user["x"] + 32 and \
-           user["y"] <= goblin["y"] + 32 and goblin["y"] <= user["y"] + 32:
-            user["point"] += 1
-            goblin["x"] = 32 + (random.random() * (787 - 64))
-            goblin["y"] = 32 + (random.random() * (480 - 64))
+    def command(self, name, commands):
+        if 0 in commands:
+            self.write_message(
+                {
+                    "map": game.map.__dict__,
+                    "name": name,
+                    "players": dict([[key, game.players[key].__dict__] for key in game.players]),
+                    "enemies": [enemy.__dict__ for enemy in game.enemies],
+                }
+            )
 
+    def action(self, name, actions):
+        game.action(name, actions)
         self.write_message(
             {
                 "name": name,
-                "users": users,
-                "goblin": goblin
+                "players": dict([[key, game.players[key].__dict__] for key in game.players]),
+                "enemies": [enemy.__dict__ for enemy in game.enemies],
             }
         )
