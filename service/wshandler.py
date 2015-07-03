@@ -54,3 +54,18 @@ class GameHandler(tornado.websocket.WebSocketHandler):
                 "enemies": [enemy.__dict__ for enemy in game.enemies],
             }
         )
+
+
+class PianoHandler(tornado.websocket.WebSocketHandler):
+    def initialize(self):
+        pass
+
+    def open(self):
+        self.set_nodelay(True)
+        pass
+
+    def data_received(self, chunk):
+        pass
+
+    def on_message(self, message):
+        pass
