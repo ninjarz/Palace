@@ -139,34 +139,42 @@ window.onload=function() {
     ws.onmessage = function(event) {
         var data = JSON.parse(event.data);
         switch (data.key) {
-            case "Q".charCodeAt(0): piano.playSound(40); break;
-            case "W".charCodeAt(0): piano.playSound(42); break;
-            case "E".charCodeAt(0): piano.playSound(44); break;
-            case "R".charCodeAt(0): piano.playSound(45); break;
-            case "T".charCodeAt(0): piano.playSound(47); break;
-            case "Y".charCodeAt(0): piano.playSound(49); break;
-            case "U".charCodeAt(0): piano.playSound(51); break;
+            case "1".charCodeAt(0): piano.playSound(64); break;
+            case "2".charCodeAt(0): piano.playSound(66); break;
+            case "3".charCodeAt(0): piano.playSound(68); break;
+            case "4".charCodeAt(0): piano.playSound(69); break;
+            case "5".charCodeAt(0): piano.playSound(71); break;
+            case "6".charCodeAt(0): piano.playSound(73); break;
+            case "7".charCodeAt(0): piano.playSound(75); break;
+
+            case "Q".charCodeAt(0): piano.playSound(52); break;
+            case "W".charCodeAt(0): piano.playSound(54); break;
+            case "E".charCodeAt(0): piano.playSound(56); break;
+            case "R".charCodeAt(0): piano.playSound(57); break;
+            case "T".charCodeAt(0): piano.playSound(59); break;
+            case "Y".charCodeAt(0): piano.playSound(61); break;
+            case "U".charCodeAt(0): piano.playSound(63); break;
             // case "I".charCodeAt(0): piano.playSound(51); break;
             // case "O".charCodeAt(0): piano.playSound(51); break;
             // case "P".charCodeAt(0): piano.playSound(51); break;
 
-            case "A".charCodeAt(0): piano.playSound(52); break;
-            case "S".charCodeAt(0): piano.playSound(54); break;
-            case "D".charCodeAt(0): piano.playSound(56); break;
-            case "F".charCodeAt(0): piano.playSound(57); break;
-            case "G".charCodeAt(0): piano.playSound(59); break;
-            case "H".charCodeAt(0): piano.playSound(61); break;
-            case "J".charCodeAt(0): piano.playSound(63); break;
+            case "A".charCodeAt(0): piano.playSound(40); break;
+            case "S".charCodeAt(0): piano.playSound(42); break;
+            case "D".charCodeAt(0): piano.playSound(44); break;
+            case "F".charCodeAt(0): piano.playSound(45); break;
+            case "G".charCodeAt(0): piano.playSound(47); break;
+            case "H".charCodeAt(0): piano.playSound(49); break;
+            case "J".charCodeAt(0): piano.playSound(51); break;
             // case "K".charCodeAt(0): piano.playSound(57); break;
             // case "L".charCodeAt(0): piano.playSound(58); break;
 
-            case "Z".charCodeAt(0): piano.playSound(64); break;
-            case "X".charCodeAt(0): piano.playSound(66); break;
-            case "C".charCodeAt(0): piano.playSound(68); break;
-            case "V".charCodeAt(0): piano.playSound(69); break;
-            case "B".charCodeAt(0): piano.playSound(71); break;
-            case "N".charCodeAt(0): piano.playSound(73); break;
-            case "M".charCodeAt(0): piano.playSound(75); break;
+            case "Z".charCodeAt(0): piano.playSound(28); break;
+            case "X".charCodeAt(0): piano.playSound(30); break;
+            case "C".charCodeAt(0): piano.playSound(32); break;
+            case "V".charCodeAt(0): piano.playSound(33); break;
+            case "B".charCodeAt(0): piano.playSound(35); break;
+            case "N".charCodeAt(0): piano.playSound(37); break;
+            case "M".charCodeAt(0): piano.playSound(39); break;
         }
     };
 

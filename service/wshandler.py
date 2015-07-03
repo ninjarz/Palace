@@ -78,3 +78,6 @@ class PianoHandler(tornado.websocket.WebSocketHandler):
             client.write_message(
                 data
             )
+
+    def on_close(self):
+        clients.remove(self)
