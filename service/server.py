@@ -14,6 +14,7 @@ if __name__ == "__main__":
         [
             (r"/", MainHandler),
             (r"/game", GameHandler),
+            (r"/piano", PianoHandler),
             (r"/web/(.*)", tornado.web.StaticFileHandler, dict(path=config_data['template_path'])),
         ],
         template_path=config_data['template_path'],

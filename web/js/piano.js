@@ -132,11 +132,13 @@ window.onload=function() {
     var piano = new Piano();
     piano.loadMusic();
 
-    var keysDown = {};
-    addEventListener("keydown", function (e) {
-        keysDown[e.keyCode] = true;
-        switch (e.keyCode) {
-            //
+    var ws = new WebSocket("ws://" + location.host + "/piano");
+    ws.onopen = function(event) {
+        console.log("ws connected");
+    };
+    ws.onmessage = function(event) {
+        var data = JSON.parse(event.data);
+        switch (data.key) {
             case "Q".charCodeAt(0): piano.playSound(40); break;
             case "W".charCodeAt(0): piano.playSound(42); break;
             case "E".charCodeAt(0): piano.playSound(44); break;
@@ -166,9 +168,16 @@ window.onload=function() {
             case "N".charCodeAt(0): piano.playSound(73); break;
             case "M".charCodeAt(0): piano.playSound(75); break;
         }
+    };
+
+    var keysDown = {};
+    addEventListener("keydown", function (e) {
+        keysDown[e.keyCode] = true;
+        ws.send(JSON.stringify({
+            "key": e.keyCode
+        }));
     }, false);
     addEventListener("keyup", function (e) {
         delete keysDown[e.keyCode];
     }, false);
-
 };

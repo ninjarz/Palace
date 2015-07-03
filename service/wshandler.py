@@ -56,11 +56,15 @@ class GameHandler(tornado.websocket.WebSocketHandler):
         )
 
 
+clients = []
+
+
 class PianoHandler(tornado.websocket.WebSocketHandler):
     def initialize(self):
         pass
 
     def open(self):
+        clients.append(self)
         self.set_nodelay(True)
         pass
 
@@ -68,4 +72,9 @@ class PianoHandler(tornado.websocket.WebSocketHandler):
         pass
 
     def on_message(self, message):
-        pass
+        data = json.loads(message)
+
+        for client in clients:
+            client.write_message(
+                data
+            )

@@ -5,7 +5,7 @@ window.onload=function() {
         console.log("ws connected");
         ws.send(JSON.stringify({
             "commands": [0]
-    }));
+        }));
     };
     // init
     var flag = false;
