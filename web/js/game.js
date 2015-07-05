@@ -25,6 +25,7 @@ window.onload=function() {
 
 function GameData() {
     // game objects
+    var that = this;
     this.name = "";
     this.map = {};
     this.players = {};
@@ -32,10 +33,11 @@ function GameData() {
 
     // load image
     this.bgImage = new Image();
-    this.bgImage.src = "/web/image/background.png";
+    this.bgImage.src = "/web/image/map/TileA5.png";
     this.mapImage = [];
-    this.mapImage[0] = new Image();
-    this.mapImage[0].src = "/web/image/characters/Other10.png";
+    this.mapImage[0] = [this.bgImage, 6, 2];
+    this.mapImage[2] = [this.bgImage, 4, 6];
+    this.mapImage[3] = [this.bgImage, 4, 7];
     this.heroImage = new Image();
     this.heroImage.src = "/web/image/hero.png";
     this.monsterImage = new Image();
@@ -57,11 +59,9 @@ function scene(socket, gameData) {
 
     // Handle keyboard controls
     var keysDown = {};
-
     addEventListener("keydown", function (e) {
         keysDown[e.keyCode] = true;
     }, false);
-
     addEventListener("keyup", function (e) {
         delete keysDown[e.keyCode];
     }, false);
@@ -98,22 +98,26 @@ function scene(socket, gameData) {
         };
         context.fillStyle="#000000";
         context.fillRect(0, 0, canvas.width, canvas.height);
-        if (gameData.mapImage[0].width) {
-            var offsetInner = {
-                "bx": Math.floor(offset.x),
-                "by": Math.floor(offset.y),
-                "ox": offset.x - Math.floor(offset.x),
-                "oy": offset.y - Math.floor(offset.y)
-            };
-            for(var i = Math.max(offsetInner.by, 0); i < Math.min(Math.ceil(offset.y + 15), gameData.map.height); ++i) {
-                for(var j = Math.max(offsetInner.bx, 0); j < Math.min(Math.ceil(offset.x + 30), gameData.map.width); ++j) {
-                    context.drawImage(gameData.mapImage[0],
-                        2 * 32, 0, 31, 31,
+        // draw map
+        var offsetInner = {
+            "bx": Math.floor(offset.x),
+            "by": Math.floor(offset.y),
+            "ox": offset.x - Math.floor(offset.x),
+            "oy": offset.y - Math.floor(offset.y)
+        };
+        for(var i = Math.max(offsetInner.by, 0); i < Math.min(Math.ceil(offset.y + 15), gameData.map.height); ++i) {
+            for(var j = Math.max(offsetInner.bx, 0); j < Math.min(Math.ceil(offset.x + 30), gameData.map.width); ++j) {
+                var index = gameData.map.data[i][j];
+
+                if (gameData.mapImage[index][0]) {
+                    context.drawImage(gameData.mapImage[index][0],
+                        gameData.mapImage[index][1] * 32, gameData.mapImage[index][2] * 32, 32, 32,
                         ((j - offsetInner.bx) - offsetInner.ox) * 32, ((i - offsetInner.by) - offsetInner.oy) * 32, 32, 32
                     );
                 }
             }
         }
+        // draw hero
         if (gameData.heroImage.width) {
             for(var player in gameData.players) {
                 var x = (gameData.players[player].x - offset.x) * 32;
@@ -123,6 +127,7 @@ function scene(socket, gameData) {
                 context.fillText(gameData.players[player].name, x, y - 32);
             }
         }
+        // draw monster
         if (gameData.monsterImage.width) {
             for(var enemy in gameData.enemies) {
                 x = (gameData.enemies[enemy].x - offset.x) * 32;

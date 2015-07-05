@@ -27,7 +27,7 @@ class Game():
         player = self.players[name]
         actions = list(set(actions))
 
-        time_delta = time.time() - player.last_time
+        time_delta = min(time.time() - player.last_time, 1)
         if 38 in actions:
             player.y -= player.speed * time_delta
         if 40 in actions:
