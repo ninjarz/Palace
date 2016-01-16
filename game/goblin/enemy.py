@@ -1,6 +1,6 @@
 
 
-class Goblin():
+class Goblin:
     def __init__(self, **info):
         self.alive = True
         self.x = 0.0

@@ -9,11 +9,12 @@ from config import *
 from service.webhandler import *
 from service.wshandler import *
 
+
 if __name__ == "__main__":
     application = tornado.web.Application(
         [
             (r"/", MainHandler),
-            (r"/game", GameHandler),
+            (r"/goblin", GoblinHandler),
             (r"/piano", PianoHandler),
             (r"/web/(.*)", tornado.web.StaticFileHandler, dict(path=config_data['template_path'])),
         ],

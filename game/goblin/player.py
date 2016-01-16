@@ -1,7 +1,7 @@
 import time
 
 
-class Player():
+class Player:
     def __init__(self, **info):
         self.name = ""
         self.alive = True

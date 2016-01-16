@@ -1,10 +1,10 @@
 import json
 import tornado.websocket
 
-from game.goblin.game import *
+from game.goblin.goblin import *
 
 
-class GameHandler(tornado.websocket.WebSocketHandler):
+class GoblinHandler(tornado.websocket.WebSocketHandler):
     game = Game()
 
     def initialize(self):
@@ -21,8 +21,8 @@ class GameHandler(tornado.websocket.WebSocketHandler):
         # identity
         # if self.get_secure_cookie("user"):
         name = str(self.request.remote_ip)
-        if name not in GameHandler.game.players:
-            GameHandler.game.create_player(name)
+        if name not in self.game.players:
+            self.game.create_player(name)
 
         data = json.loads(message)
         if "commands" in data:
@@ -37,20 +37,20 @@ class GameHandler(tornado.websocket.WebSocketHandler):
         if 0 in commands:
             self.write_message(
                 {
-                    "map": GameHandler.game.map.__dict__,
+                    "map": self.game.map.__dict__,
                     "name": name,
-                    "players": dict([[key, GameHandler.game.players[key].__dict__] for key in GameHandler.game.players]),
-                    "enemies": [enemy.__dict__ for enemy in GameHandler.game.enemies],
+                    "players": dict([[key, self.game.players[key].__dict__] for key in self.game.players]),
+                    "enemies": [enemy.__dict__ for enemy in self.game.enemies],
                 }
             )
 
     def action(self, name, actions):
-        GameHandler.game.action(name, actions)
+        self.game.action(name, actions)
         self.write_message(
             {
                 "name": name,
-                "players": dict([[key, GameHandler.game.players[key].__dict__] for key in GameHandler.game.players]),
-                "enemies": [enemy.__dict__ for enemy in GameHandler.game.enemies],
+                "players": dict([[key, self.game.players[key].__dict__] for key in self.game.players]),
+                "enemies": [enemy.__dict__ for enemy in self.game.enemies],
             }
         )
 

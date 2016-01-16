@@ -1,6 +1,6 @@
-window.onload=function() {
+window.onload = function() {
     // socket
-    var ws = new WebSocket("ws://" + location.host + "/game");
+    var ws = new WebSocket("ws://" + location.host + "/goblin");
     ws.onopen = function(event) {
         console.log("ws connected");
         ws.send(JSON.stringify({

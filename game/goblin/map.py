@@ -1,7 +1,7 @@
 import random
 
 
-class Map():
+class Map:
     def __init__(self, **info):
         self.width = 30
         self.height = 15

@@ -5,7 +5,7 @@ from game.goblin.player import *
 from game.goblin.enemy import *
 
 
-class Game():
+class Game:
     def __init__(self):
         self.map = Map()
         self.players = {}
