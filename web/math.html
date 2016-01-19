@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <link type="text/css" rel="stylesheet" href="/web/css/index.css">
+    <link type="text/css" rel="stylesheet" href="/web/css/math.css">
     <script src="/web/framework/graphy/graphy.js" type="text/javascript" charset="utf-8"></script>
     <script src="/web/js/math.js" type="text/javascript" charset="utf-8"></script>
 
@@ -11,7 +12,7 @@
 </head>
 <body class="dimmed">
 	<div id="header">
-        <div class="center">
+        <div id="header_center">
             <h1>
                 <a href="/" id="index">Emerald</a>
             </h1>
@@ -30,13 +31,40 @@
   	</div>
 
     <div id="section"  style="background-color: #F5F5F5">
-        <div class="center">
-            <canvas id="math_canvas">
+        <div id="section_left">
+            <div id="controller">
+                <small>Type:</small>
+                <select id="math_type">
+                    <option value="sin">sin</option>
+                    <option value="free">free</option>
+                </select>
 
+                <div class="line"></div>
+
+                <div id="sin" style="display:block;">
+                    <label>
+                        <small>Max:</small>
+                        <input type="number" value="1">
+                    </label>
+                    <label>
+                        <small>Min:</small>
+                        <input type="number" value="-1">
+                    </label>
+                    <label>
+                        <small>MResult:y =</small>
+                        <small>Math.sin(x)</small>
+                    </label>
+                </div>
+                <div id="free" style="display:none;">
+                    <small>Function:</small><input type="text">
+                    <button>Graph</button>
+                </div>
+
+            </div>
+        </div>
+        <div id="section_center">
+            <canvas id="math_canvas">
             </canvas>
-            <br>y =
-            <input/>
-            <button>Graph</button>
         </div>
     </div>
 </body>

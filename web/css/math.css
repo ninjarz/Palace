@@ -1,0 +1,21 @@
+#controller {
+    height: 70%;
+    border-radius: 5px;
+    border: #303030 solid 2px;
+    padding: 10px;
+    font-family: monospace ;
+
+}
+
+#controller .line {
+    width: 100%;
+    background: #303030;
+    height: 2px;
+    margin: 5px auto 5px auto;
+}
+
+#controller button {
+    border: #303030 solid 1px;
+    border-radius: 5px;
+    text-align: center;
+}
