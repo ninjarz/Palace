@@ -75,7 +75,7 @@ function Piano() {
     function drawSpectrum() {
         // canvas
         var canvas = document.getElementsByTagName('canvas')[0];
-        var width = 800;
+        var width = 791;
         var height = 350;
         canvas.width = width;
         canvas.height = height;
@@ -98,9 +98,9 @@ function Piano() {
             var step = Math.round(data.length / meterNum);
 
             // draw
-            context.clearRect(0, 0, width, height);
+            context.clearRect(0, 0, canvas.width, height);
             context.fillStyle = gradient;
-            context.fillRect(0, height - 2, width, 2);
+            context.fillRect(0, height - 2, canvas.width, 2);
             for (var i = 0; i < meterNum; ++i) {
                 var value = 0;
                 if (that.counter)

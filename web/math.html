@@ -33,33 +33,66 @@
     <div id="section"  style="background-color: #F5F5F5">
         <div id="section_left">
             <div id="controller">
-                <small>Type:</small>
-                <select id="math_type">
-                    <option value="sin">sin</option>
-                    <option value="free">free</option>
-                </select>
+                <!-- ---------------------------------------------------------------------------------------------------- -->
+                <div id="controller_selector">
+                    <small>Type:</small>
+                    <label for="selector"></label>
+                    <select id="selector">
+                        <option value="sin">sin</option>
+                        <option value="free">free</option>
+                    </select>
+                </div>
 
+                <!-- ---------------------------------------------------------------------------------------------------- -->
                 <div class="line"></div>
+                <div id="controller_input">
+                    <div id="sin" style="display:block;">
+                        <small>y=Asin(ωx+φ)+b</small>
+                        <br>
+                        <label>
+                            <small>Max:</small>
+                            <input type="number" step="0.01" value="1">
+                        </label>
+                        <br>
+                        <label>
+                            <small>Min:</small>
+                            <input type="number" step="0.01" value="-1">
+                        </label>
+                        <label>
+                            <small>&nbsp;&nbsp;A:</small>
+                            <input type="number" step="0.01" value="2">
+                        </label>
+                        <label>
+                            <small>&nbsp;&nbsp;b:</small>
+                            <input type="number" step="0.01" value="0">
+                        </label>
+                        <label>
+                            <small>&nbsp;&nbsp;ω:</small>
+                            <input type="number" step="0.01" value="1">
+                        </label>
+                        <label>
+                            <small>&nbsp;&nbsp;φ:</small>
+                            <input type="number" step="0.01" value="0">
+                        </label>
+                    </div>
+                    <div id="free" style="display:none;">
+                        <small>Function:</small>
+                        <label>
+                            <input type="text">
+                        </label>
+                        <button>Graph</button>
+                    </div>
+                </div>
 
-                <div id="sin" style="display:block;">
+                <!-- ---------------------------------------------------------------------------------------------------- -->
+                <div class="line"></div>
+                <div id="controller_result">
                     <label>
-                        <small>Max:</small>
-                        <input type="number" value="1">
-                    </label>
-                    <label>
-                        <small>Min:</small>
-                        <input type="number" value="-1">
-                    </label>
-                    <label>
-                        <small>MResult:y =</small>
-                        <small>Math.sin(x)</small>
+                        <small>Result:</small>
+                        <br>
+                        <small id="result"></small>
                     </label>
                 </div>
-                <div id="free" style="display:none;">
-                    <small>Function:</small><input type="text">
-                    <button>Graph</button>
-                </div>
-
             </div>
         </div>
         <div id="section_center">

@@ -1,5 +1,4 @@
 (function () {
-
     window.Graphy = function (c) {
         if (c) {
             this.setCanvas(c);
@@ -11,7 +10,6 @@
         this.ctx = this.canvas.getContext('2d');
         this.ctx.translate(0, this.canvas.height);
         this.ctx.scale(1, -1);
-        
     };
     
     Graphy.prototype.setPixelsPerUnit = function(n){
@@ -58,10 +56,16 @@
         this.ctx.strokeStyle = 'black';
         this.ctx.lineWidth = 1;
         this.ctx.stroke();
+
+        // save
+        this.gridImage = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
     };
     
     Graphy.prototype.graph = function(eq, color,thickness){
-        
+        if (this.gridImage) {
+            this.ctx.putImageData(this.gridImage, 0, 0);
+        }
+
         var reduct = 1 / this.scale;
         // draw function per pixel
         var x = -1 * this.canvas.width;
@@ -92,7 +96,6 @@
             // set the backup points
             backxpix = xpix + this.originX;
             backypix = ypix + this.originY;
-            
         }
     };
     
